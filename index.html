@@ -1,27 +1,25 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>BIG KAYY GLOBAL | BIG K</title>
-  <meta name="description" content="BIG KAYY GLOBAL — digital services and gadget shopping.">
-
+  <title>BKG 🌍 | BIG KAYY GLOBAL</title>
+  <meta name="description" content="BKG - BIG KAYY GLOBAL. Your destination for digital services and quality gadgets.">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       font-family: Arial, sans-serif;
       background: #f4f7fb;
       color: #172033;
       line-height: 1.6;
     }
-
     header {
       background: #071b35;
       color: white;
@@ -32,37 +30,39 @@
       flex-wrap: wrap;
       gap: 12px;
     }
-
     .logo {
-      font-size: 23px;
-      font-weight: bold;
       color: #38d996;
+      font-size: 25px;
+      font-weight: bold;
     }
-
-    header a {
+    nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    nav a {
       color: white;
       text-decoration: none;
       font-size: 14px;
     }
-
+    nav a:hover {
+      color: #38d996;
+    }
     .hero {
       background: linear-gradient(135deg, #071b35, #104d66);
       color: white;
       text-align: center;
-      padding: 55px 20px;
+      padding: 65px 20px;
     }
-
     .hero h1 {
-      font-size: 34px;
-      margin-bottom: 12px;
+      font-size: 36px;
+      margin-bottom: 15px;
     }
-
     .hero p {
-      max-width: 550px;
-      margin: 0 auto 22px;
+      max-width: 600px;
+      margin: 0 auto 25px;
       color: #e1eaf4;
     }
-
     .button {
       display: inline-block;
       background: #38d996;
@@ -74,188 +74,240 @@
       border: none;
       cursor: pointer;
     }
-
+    .button:hover {
+      background: #24c985;
+    }
     main {
       max-width: 1100px;
       margin: auto;
-      padding: 30px 16px;
+      padding: 35px 16px;
     }
-
     .section-title {
       text-align: center;
-      margin-bottom: 22px;
-      font-size: 25px;
+      margin-bottom: 25px;
+      font-size: 27px;
     }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+      gap: 16px;
     }
-
     .card {
       background: white;
-      padding: 20px 12px;
+      padding: 22px 14px;
       border-radius: 14px;
       text-align: center;
-      box-shadow: 0 3px 12px #071b3510;
+      box-shadow: 0 3px 12px rgba(7, 27, 53, 0.08);
     }
-
     .icon {
-      font-size: 32px;
+      font-size: 34px;
       margin-bottom: 8px;
     }
-
     .card h3 {
-      font-size: 17px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      font-size: 18px;
     }
-
     .card p {
       color: #64748b;
-      font-size: 13px;
-      margin-bottom: 14px;
+      font-size: 14px;
+      margin-bottom: 16px;
     }
-
     .card button {
       background: #071b35;
       color: white;
       border: none;
-      padding: 10px 12px;
+      padding: 10px 14px;
       border-radius: 7px;
       cursor: pointer;
+      font-weight: bold;
     }
-
+    .card button:hover {
+      background: #104d66;
+    }
     .about {
       background: white;
       border-radius: 14px;
-      padding: 25px 18px;
-      margin-top: 35px;
+      padding: 30px 20px;
+      margin-top: 40px;
       text-align: center;
     }
-
     .about p {
+      max-width: 700px;
+      margin: 12px auto 0;
       color: #64748b;
-      margin-top: 10px;
     }
-
+    .contact {
+      text-align: center;
+      padding: 35px 15px;
+    }
+    .contact p {
+      margin: 10px 0 20px;
+      color: #64748b;
+    }
     footer {
-      margin-top: 35px;
       background: #071b35;
       color: white;
       text-align: center;
       padding: 22px 15px;
-      font-size: 13px;
+      margin-top: 25px;
+      font-size: 14px;
     }
-
     @media (min-width: 650px) {
       .grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-
       .hero h1 {
-        font-size: 44px;
+        font-size: 46px;
+      }
+    }
+    @media (max-width: 420px) {
+      header {
+        justify-content: center;
+      }
+      nav {
+        justify-content: center;
+      }
+      .hero h1 {
+        font-size: 29px;
       }
     }
   </style>
 </head>
-
 <body>
-
   <header>
-    <div class="logo">BIG K 🌍</div>
-    <a href="#services">Our Services</a>
-    <a href="#about">About Us</a>
+    <div class="logo">BKG 🌍</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#gadgets">Gadgets</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
   </header>
-
-  <section class="hero">
-    <h1>Welcome to BIG KAYY GLOBAL</h1>
-
+  <section class="hero" id="home">
+    <h1>Welcome to BKG 🌍</h1>
     <p>
-      Your one-stop destination for airtime, data, bill payments
-      and quality gadgets.
+      BIG KAYY GLOBAL — your destination for airtime,
+      data, bill payments, TV subscriptions and quality gadgets.
     </p>
-
     <a class="button" href="#services">Explore Our Services</a>
   </section>
-
   <main>
     <section id="services">
-      <h2 class="section-title">Our Services</h2>
-
+      <h2 class="section-title">Our Digital Services</h2>
       <div class="grid">
-
         <div class="card">
           <div class="icon">📱</div>
           <h3>Airtime</h3>
-          <p>Top up your mobile phone.</p>
-          <button onclick="showMessage('Airtime')">Get Started</button>
+          <p>Top up your mobile phone with airtime.</p>
+          <button onclick="showMessage('Airtime')">
+            Get Started
+          </button>
         </div>
-
         <div class="card">
           <div class="icon">📶</div>
           <h3>Data Bundles</h3>
-          <p>Stay connected with data plans.</p>
-          <button onclick="showMessage('Data Bundles')">Get Started</button>
+          <p>Choose a data plan to stay connected.</p>
+          <button onclick="showMessage('Data Bundles')">
+            Get Started
+          </button>
         </div>
-
         <div class="card">
           <div class="icon">💡</div>
           <h3>Electricity Bills</h3>
-          <p>Pay your electricity bills.</p>
-          <button onclick="showMessage('Electricity Bills')">Get Started</button>
+          <p>Pay supported electricity bills conveniently.</p>
+          <button onclick="showMessage('Electricity Bills')">
+            Pay Bill
+          </button>
         </div>
-
         <div class="card">
           <div class="icon">📺</div>
           <h3>TV Subscriptions</h3>
-          <p>Renew your TV or decoder plan.</p>
-          <button onclick="showMessage('TV Subscriptions')">Get Started</button>
+          <p>Renew eligible TV and decoder subscriptions.</p>
+          <button onclick="showMessage('TV Subscriptions')">
+            Subscribe
+          </button>
         </div>
-
-        <div class="card">
-          <div class="icon">🛍️</div>
-          <h3>Gadgets</h3>
-          <p>Explore phones, laptops and accessories.</p>
-          <button onclick="showMessage('Gadgets')">Explore Gadgets</button>
-        </div>
-
         <div class="card">
           <div class="icon">🪪</div>
           <h3>SIM Services</h3>
-          <p>Ask about authorized SIM services.</p>
-          <button onclick="showMessage('SIM Services')">Learn More</button>
+          <p>Ask about available, authorized SIM services.</p>
+          <button onclick="showMessage('SIM Services')">
+            Learn More
+          </button>
         </div>
-
       </div>
     </section>
-
+    <section id="gadgets" style="margin-top: 40px;">
+      <h2 class="section-title">Gadgets & Accessories</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="icon">📱</div>
+          <h3>Mobile Phones</h3>
+          <p>Explore smartphones for different needs.</p>
+          <button onclick="showMessage('Mobile Phones')">
+            View Products
+          </button>
+        </div>
+        <div class="card">
+          <div class="icon">💻</div>
+          <h3>Laptops</h3>
+          <p>Find devices for work, school and business.</p>
+          <button onclick="showMessage('Laptops')">
+            View Products
+          </button>
+        </div>
+        <div class="card">
+          <div class="icon">🔊</div>
+          <h3>Speakers</h3>
+          <p>Discover speakers and audio accessories.</p>
+          <button onclick="showMessage('Speakers')">
+            View Products
+          </button>
+        </div>
+        <div class="card">
+          <div class="icon">🎧</div>
+          <h3>Accessories</h3>
+          <p>Explore chargers, earphones and other accessories.</p>
+          <button onclick="showMessage('Accessories')">
+            View Products
+          </button>
+        </div>
+      </div>
+    </section>
     <section class="about" id="about">
-      <h2>About BIG KAYY GLOBAL</h2>
+      <h2>About BKG 🌍</h2>
       <p>
-        BIG KAYY GLOBAL (BIG K) aims to make digital services
-        and gadget shopping simple and convenient.
-        We are building a secure platform for our customers.
+        BIG KAYY GLOBAL (BKG) is being developed to make
+        digital services and gadget shopping simple and convenient.
+        Our goal is to provide customers with a reliable,
+        user-friendly online experience.
       </p>
     </section>
+    <section class="contact" id="contact">
+      <h2>Contact BKG</h2>
+      <p>
+        Have a question about our services or products?
+        Contact our team for assistance.
+      </p>
+      <a class="button" href="mailto:hello@bigkayyglobal.com">
+        Email Us
+      </a>
+    </section>
   </main>
-
   <footer>
-    <p>&copy; <span id="year"></span> BIG KAYY GLOBAL.</p>
+    <p>&copy; <span id="year"></span> BKG 🌍 — BIG KAYY GLOBAL.</p>
     <p>All rights reserved.</p>
   </footer>
-
   <script>
     function showMessage(service) {
       alert(
         service +
-        " will be available when the service system is connected."
+        " is not connected yet. Please check back when this service becomes available."
       );
     }
-
     document.getElementById("year").textContent =
       new Date().getFullYear();
   </script>
-
 </body>
 </html>
