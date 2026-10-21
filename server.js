@@ -167,14 +167,17 @@ app.post("/api/auth/verify-email", async (req, res, next) => {
     if (!result.rowCount) return apiError(res, 400, "That code is invalid or expired. Request a new verification code.");
     const row = result.rows[0];
     if (!(await bcrypt.compare(code, row.code_hash))) return apiError(res, 400, "That code is invalid or expired. Request a new verification code.");
-    await pool.query("BEGIN");
+    const client = await pool.connect();
     try {
-      await pool.query("UPDATE customers SET email_verified = TRUE, updated_at = NOW() WHERE id = $1", [row.id]);
-      await pool.query("UPDATE email_verification_codes SET consumed_at = NOW() WHERE customer_id = $1 AND consumed_at IS NULL", [row.id]);
-      await pool.query("COMMIT");
+      await client.query("BEGIN");
+      await client.query("UPDATE customers SET email_verified = TRUE, updated_at = NOW() WHERE id = $1", [row.id]);
+      await client.query("UPDATE email_verification_codes SET consumed_at = NOW() WHERE customer_id = $1 AND consumed_at IS NULL", [row.id]);
+      await client.query("COMMIT");
     } catch (error) {
-      await pool.query("ROLLBACK");
+      await client.query("ROLLBACK");
       throw error;
+    } finally {
+      client.release();
     }
     const token = createToken({ id: row.id, email: row.email });
     return res.json({ success: true, message: "Email verified. You are now signed in.", token, customer: { id: row.id, fullName: row.full_name, email: row.email } });
@@ -236,6 +239,9 @@ app.get("/api/virtual-numbers/catalog", (_req, res) => {
 app.post("/api/virtual-numbers/orders", requireAuth, (_req, res) => {
   return apiError(res, 503, "Virtual-number ordering is not enabled yet. Configure an authorized provider and validate its permitted uses before enabling purchases.");
 });
+
+// Serve the storefront from the same Node service when deployed as a single application.
+app.use(express.static(__dirname, { extensions: ["html"], index: "index.html" }));
 
 app.use((error, _req, res, _next) => {
   console.error("[BKG API]", error && error.message ? error.message : "Unknown error");
