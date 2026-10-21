@@ -2,137 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BKG 🌍 | BIG KAYY GLOBAL</title>
-  <meta name="description" content="BKG - BIG KAYY GLOBAL. Your destination for digital services and quality gadgets.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10191c">
+  <meta name="description" content="Shop phones, laptops, speakers and accessories at BKG Bigg Kayy Global. Explore international virtual-number and SMS verification services.">
+  <title>BKG | Bigg Kayy Global — Gadgets & Digital Services</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <div class="logo">BKG 🌍</div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#services">Services</a>
+    <a class="logo" href="#home" aria-label="BKG home">BKG<span class="logo-dot">.</span></a>
+    <nav aria-label="Main navigation">
       <a href="#gadgets">Gadgets</a>
+      <a href="#virtual-numbers">Virtual Numbers</a>
+      <a href="#services">Digital Services</a>
       <a href="#about">About</a>
-      <a href="#contact">Contact</a>
     </nav>
+    <button class="cart-button" id="open-cart" type="button" aria-label="Open shopping cart">Cart <span id="cart-count">0</span></button>
   </header>
+
   <section class="hero" id="home">
-    <h1>Welcome to BKG 🌍</h1>
-    <p>
-      BIG KAYY GLOBAL — your destination for airtime,
-      data, bill payments, TV subscriptions and quality gadgets.
-    </p>
-    <a class="button" href="#services">Explore Our Services</a>
+    <div class="hero-content">
+      <p class="eyebrow"><span class="status-dot"></span> SMART TECH. SIMPLE SERVICE.</p>
+      <h1>Everything tech.<br><span class="accent-text">One global store.</span></h1>
+      <p class="hero-copy">Discover gadgets you’ll love and digital services designed to keep you connected, wherever you are.</p>
+      <div class="hero-actions">
+        <a class="button" href="#gadgets">Explore gadgets <span aria-hidden="true">↗</span></a>
+        <a class="text-link" href="#virtual-numbers">Explore virtual numbers →</a>
+      </div>
+      <div class="hero-trust">
+        <span>✦ Carefully selected tech</span><span>✦ Straightforward service</span><span>✦ Built around you</span>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+      <div class="device device-phone"><div class="phone-screen"><div class="phone-camera"></div><div class="screen-glow"></div><span>BKG</span><small>Stay connected.</small></div></div>
+      <div class="device device-earbuds"><div class="earbud left-bud"></div><div class="earbud right-bud"></div><div class="bud-case"></div></div>
+      <div class="art-label"><span class="status-dot"></span> YOUR TECH, YOUR WAY</div>
+    </div>
   </section>
+
   <main>
-    <section id="services">
-      <h2 class="section-title">Our Digital Services</h2>
-      <div class="grid">
-        <div class="card">
-          <div class="icon">📱</div>
-          <h3>Airtime</h3>
-          <p>Top up your mobile phone with airtime.</p>
-          <button onclick="showMessage('Airtime')">
-            Get Started
-          </button>
-        </div>
-        <div class="card">
-          <div class="icon">📶</div>
-          <h3>Data Bundles</h3>
-          <p>Choose a data plan to stay connected.</p>
-          <button onclick="showMessage('Data Bundles')">
-            Get Started
-          </button>
-        </div>
-        <div class="card">
-          <div class="icon">💡</div>
-          <h3>Electricity Bills</h3>
-          <p>Pay supported electricity bills conveniently.</p>
-          <button onclick="showMessage('Electricity Bills')">
-            Pay Bill
-          </button>
-        </div>
-        <div class="card">
-          <div class="icon">📺</div>
-          <h3>TV Subscriptions</h3>
-          <p>Renew eligible TV and decoder subscriptions.</p>
-          <button onclick="showMessage('TV Subscriptions')">
-            Subscribe
-          </button>
-        </div>
-        <div class="card">
-          <div class="icon">🪪</div>
-          <h3>SIM Services</h3>
-          <p>Ask about available, authorized SIM services.</p>
-          <button onclick="showMessage('SIM Services')">
-            Learn More
-          </button>
-        </div>
+    <section class="benefit-strip" aria-label="Store highlights">
+      <div><span class="benefit-icon">◇</span><span><strong>Gadgets & accessories</strong><small>Everyday tech essentials</small></span></div>
+      <div><span class="benefit-icon">◎</span><span><strong>Digital connectivity</strong><small>Services for staying connected</small></span></div>
+      <div><span class="benefit-icon">↗</span><span><strong>Simple experience</strong><small>Clear steps from start to finish</small></span></div>
+    </section>
+
+    <section id="gadgets" class="store-section">
+      <div class="section-heading"><div><p class="eyebrow">THE GADGET EDIT</p><h2>Tech that fits your life.</h2></div><p>Browse our featured categories. Product availability and final pricing will be confirmed before checkout.</p></div>
+      <div class="product-grid">
+        <article class="product-card"><div class="product-visual visual-phone"><span class="product-tag">SMART TECH</span><div class="render-phone"><div class="camera-stack"></div><div class="phone-shine"></div></div></div><div class="product-info"><p class="product-category">Mobile</p><h3>Smartphones</h3><p>Everyday performance, great cameras and reliable connectivity.</p><button class="outline-button add-item" data-item="Smartphones" data-price="0">Add to enquiry list <span>＋</span></button></div></article>
+        <article class="product-card"><div class="product-visual visual-laptop"><span class="product-tag">WORK & CREATE</span><div class="render-laptop"><div class="laptop-screen"><span>BKG</span></div><div class="laptop-base"></div></div></div><div class="product-info"><p class="product-category">Computing</p><h3>Laptops</h3><p>Devices for work, study, business and creative projects.</p><button class="outline-button add-item" data-item="Laptops" data-price="0">Add to enquiry list <span>＋</span></button></div></article>
+        <article class="product-card"><div class="product-visual visual-audio"><span class="product-tag">SOUND BETTER</span><div class="speaker speaker-large"><i></i><b></b></div><div class="speaker speaker-small"><i></i><b></b></div></div><div class="product-info"><p class="product-category">Audio</p><h3>Speakers & Audio</h3><p>Bring your playlists, movies and moments to life.</p><button class="outline-button add-item" data-item="Speakers & Audio" data-price="0">Add to enquiry list <span>＋</span></button></div></article>
+        <article class="product-card"><div class="product-visual visual-accessories"><span class="product-tag">DAILY ESSENTIALS</span><div class="accessory-disc disc-one"></div><div class="accessory-disc disc-two"></div><div class="accessory-cable"></div></div><div class="product-info"><p class="product-category">Accessories</p><h3>Chargers & More</h3><p>Useful add-ons, charging essentials and everyday extras.</p><button class="outline-button add-item" data-item="Gadget Accessories" data-price="0">Add to enquiry list <span>＋</span></button></div></article>
       </div>
     </section>
-    <section id="gadgets" class="gadgets-section">
-      <h2 class="section-title">Gadgets & Accessories</h2>
-      <div class="grid">
-        <div class="card">
-          <div class="icon">📱</div>
-          <h3>Mobile Phones</h3>
-          <p>Explore smartphones for different needs.</p>
-          <button onclick="showMessage('Mobile Phones')">
-            View Products
-          </button>
-        </div>
-        <div class="card">
-          <div class="icon">💻</div>
-          <h3>Laptops</h3>
-          <p>Find devices for work, school and business.</p>
-          <button onclick="showMessage('Laptops')">
-            View Products
-          </button>
-        </div>
-        <div class="card">
-          <div class="icon">🔊</div>
-          <h3>Speakers</h3>
-          <p>Discover speakers and audio accessories.</p>
-          <button onclick="showMessage('Speakers')">
-            View Products
-          </button>
-        </div>
-        <div class="card">
-          <div class="icon">🎧</div>
-          <h3>Accessories</h3>
-          <p>Explore chargers, earphones and other accessories.</p>
-          <button onclick="showMessage('Accessories')">
-            View Products
-          </button>
-        </div>
+
+    <section id="virtual-numbers" class="virtual-section">
+      <div class="virtual-copy"><p class="eyebrow">GLOBAL CONNECTIVITY</p><h2>A number for your next digital step.</h2><p>Explore international virtual-number options and SMS verification services for platforms and use cases supported by our provider.</p><ul class="check-list"><li>Check country and service availability</li><li>See supported platforms before ordering</li><li>Use numbers only where permitted by the service</li></ul><p class="fine-print">Availability, supported services, rental duration and pricing depend on the authorized provider. Some platforms prohibit virtual numbers.</p></div>
+      <div class="number-panel"><div class="panel-top"><span class="panel-indicator"></span><span>VIRTUAL NUMBER SERVICES</span><span class="panel-lock">⌑</span></div><div class="country-row"><span class="country-flag">🇺🇸</span><span><strong>United States</strong><small>Availability checked at order time</small></span><span class="country-arrow">↗</span></div><div class="country-row"><span class="country-flag">🇬🇧</span><span><strong>United Kingdom</strong><small>Availability checked at order time</small></span><span class="country-arrow">↗</span></div><div class="country-row"><span class="country-flag">🇨🇦</span><span><strong>Canada</strong><small>Availability checked at order time</small></span><span class="country-arrow">↗</span></div><div class="country-row"><span class="country-flag">🌍</span><span><strong>Other countries</strong><small>Ask us about supported locations</small></span><span class="country-arrow">↗</span></div><button class="button button-full" id="number-enquiry" type="button">Enquire about virtual numbers →</button><p class="panel-note">No number is activated and no SMS is guaranteed until provider availability is confirmed.</p></div>
+    </section>
+
+    <section id="services" class="store-section services-section">
+      <div class="section-heading"><div><p class="eyebrow">EVERYDAY DIGITAL SERVICES</p><h2>Stay powered. Stay connected.</h2></div><p>Tell us what you need. Service activation will be enabled after authorized provider integration.</p></div>
+      <div class="service-grid">
+        <article class="service-card"><span>▰</span><h3>Airtime & data</h3><p>Mobile top-ups and data bundles for supported networks.</p><button class="service-link" data-service="Airtime and data">Make an enquiry →</button></article>
+        <article class="service-card"><span>ϟ</span><h3>Electricity bills</h3><p>Supported electricity bill payment and meter services.</p><button class="service-link" data-service="Electricity bills">Make an enquiry →</button></article>
+        <article class="service-card"><span>▣</span><h3>TV subscriptions</h3><p>Decoder and TV subscription renewals where supported.</p><button class="service-link" data-service="TV subscriptions">Make an enquiry →</button></article>
       </div>
     </section>
-    <section class="about" id="about">
-      <h2>About BKG 🌍</h2>
-      <p>
-        BIG KAYY GLOBAL (BKG) is being developed to make
-        digital services and gadget shopping simple and convenient.
-        Our goal is to provide customers with a reliable,
-        user-friendly online experience.
-      </p>
-    </section>
-    <section class="contact" id="contact">
-      <h2>Contact BKG</h2>
-      <p>
-        Have a question about our services or products?
-        Contact our team for assistance.
-      </p>
-      <a class="button" href="mailto:hello@bigkayyglobal.com">
-        Email Us
-      </a>
-    </section>
+
+    <section class="about-section" id="about"><div class="about-mark">BKG<span>.</span></div><div><p class="eyebrow">ABOUT BIGG KAYY GLOBAL</p><h2>Good tech. Clear service. A global outlook.</h2><p>BKG brings gadget shopping and digital connectivity services together in one convenient destination. We’re building a dependable experience with clear product information, transparent order steps and secure payment integration.</p></div></section>
+    <section class="contact-section"><div><p class="eyebrow">NEED A HAND?</p><h2>Let’s find what works for you.</h2><p>Send an enquiry about a gadget, a virtual number or a digital service.</p></div><a class="button" id="contact-link" href="mailto:hello@bigkayyglobal.com?subject=BKG%20Enquiry">Contact BKG →</a></section>
   </main>
-  <footer>
-    <p>&copy; <span id="year"></span> BKG 🌍 — BIG KAYY GLOBAL.</p>
-    <p>All rights reserved.</p>
-  </footer>
+
+  <footer><a class="logo footer-logo" href="#home">BKG<span class="logo-dot">.</span></a><p>BIGG KAYY GLOBAL · Gadgets & digital services</p><small>© <span id="year"></span> BKG. All rights reserved.</small></footer>
+
+  <dialog id="cart-dialog" class="cart-dialog"><div class="dialog-heading"><div><p class="eyebrow">YOUR SELECTION</p><h2>Enquiry list <span id="dialog-count">(0)</span></h2></div><button class="close-button" id="close-cart" type="button" aria-label="Close enquiry list">×</button></div><p class="cart-intro">Save the items you’re interested in and send one enquiry. This list does not place an order or charge you.</p><div id="cart-items" class="cart-items"><p class="empty-cart">Your list is empty. Add a gadget to get started.</p></div><div class="cart-actions"><button class="outline-button" id="clear-cart" type="button">Clear list</button><button class="button" id="send-enquiry" type="button">Send enquiry →</button></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
 </body>
 </html>
