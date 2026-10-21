@@ -228,6 +228,36 @@ app.post("/api/orders/enquiry", requireAuth, async (req, res, next) => {
   } catch (error) { return next(error); }
 });
 
+function requireAdmin(req, res, next) {
+  if (!req.user || req.user.role !== "admin") return apiError(res, 403, "Administrator access is required.");
+  return next();
+}
+
+app.get("/api/admin/enquiries", requireAuth, requireAdmin, async (req, res, next) => {
+  try {
+    if (!requireDatabase(res)) return;
+    const result = await pool.query(
+      "SELECT e.id, e.items, e.note, e.status, e.created_at, c.full_name, c.email FROM order_enquiries e JOIN customers c ON c.id = e.customer_id ORDER BY e.created_at DESC LIMIT 100"
+    );
+    return res.json({ success: true, enquiries: result.rows });
+  } catch (error) { return next(error); }
+});
+
+app.post("/api/admin/enquiries/:id/status", requireAuth, requireAdmin, async (req, res, next) => {
+  try {
+    if (!requireDatabase(res)) return;
+    const allowed = new Set(["pending", "contacted", "closed", "cancelled"]);
+    const status = req.body.status;
+    if (!allowed.has(status)) return apiError(res, 400, "Choose a valid enquiry status.");
+    const result = await pool.query(
+      "UPDATE order_enquiries SET status = $1, updated_at = NOW() WHERE id = $2 RETURNING id, status, updated_at",
+      [status, req.params.id]
+    );
+    if (!result.rowCount) return apiError(res, 404, "Enquiry not found.");
+    return res.json({ success: true, enquiry: result.rows[0] });
+  } catch (error) { return next(error); }
+});
+
 app.post("/api/payments/checkout", requireAuth, (_req, res) => {
   return apiError(res, 503, "Online checkout is not enabled. The payment provider must be selected, configured and tested before BKG can accept payments.");
 });
