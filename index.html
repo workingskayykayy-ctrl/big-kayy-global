@@ -17,7 +17,7 @@
       <a href="#services">Digital Services</a>
       <a href="#about">About</a>
     </nav>
-    <button class="cart-button" id="open-cart" type="button" aria-label="Open shopping cart">Cart <span id="cart-count">0</span></button>
+    <div class="header-actions"><button class="account-button" id="open-account" type="button">Account</button><button class="cart-button" id="open-cart" type="button" aria-label="Open shopping cart">Cart <span id="cart-count">0</span></button></div>
   </header>
 
   <section class="hero" id="home">
@@ -78,8 +78,22 @@
 
   <footer><a class="logo footer-logo" href="#home">BKG<span class="logo-dot">.</span></a><p>BIGG KAYY GLOBAL · Gadgets & digital services</p><small>© <span id="year"></span> BKG. All rights reserved.</small></footer>
 
+  <dialog id="account-dialog" class="cart-dialog">
+    <div class="dialog-heading"><div><p class="eyebrow">YOUR BKG ACCOUNT</p><h2 id="account-title">Create an account</h2></div><button class="close-button" id="close-account" type="button" aria-label="Close account window">×</button></div>
+    <div id="account-status" class="form-status" role="status" aria-live="polite">Create an account, then verify your email to sign in.</div>
+    <form id="account-form" class="account-form">
+      <label id="full-name-label">Full name<input id="account-full-name" name="fullName" autocomplete="name" maxlength="100" required></label>
+      <label>Email address<input id="account-email" name="email" type="email" autocomplete="email" maxlength="254" required></label>
+      <label id="password-label">Password (at least 10 characters)<input id="account-password" name="password" type="password" autocomplete="new-password" minlength="10" maxlength="128" required></label>
+      <label id="code-label" hidden>Email verification code<input id="account-code" name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6"></label>
+      <button class="button button-full" id="account-submit" type="submit">Create account</button>
+    </form>
+    <div class="account-alternatives"><button type="button" id="switch-account-mode">Already registered? Sign in</button><button type="button" id="verify-account-mode">I have a verification code</button></div>
+    <p class="panel-note">Never share your password or verification code. BKG will not ask you to send them to a person.</p>
+  </dialog>
   <dialog id="cart-dialog" class="cart-dialog"><div class="dialog-heading"><div><p class="eyebrow">YOUR SELECTION</p><h2>Enquiry list <span id="dialog-count">(0)</span></h2></div><button class="close-button" id="close-cart" type="button" aria-label="Close enquiry list">×</button></div><p class="cart-intro">Save the items you’re interested in and send one enquiry. This list does not place an order or charge you.</p><div id="cart-items" class="cart-items"><p class="empty-cart">Your list is empty. Add a gadget to get started.</p></div><div class="cart-actions"><button class="outline-button" id="clear-cart" type="button">Clear list</button><button class="button" id="send-enquiry" type="button">Send enquiry →</button></div></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
+<script>window.BKG_API_BASE = "";</script>
 </body>
 </html>
