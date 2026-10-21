@@ -274,8 +274,23 @@ app.post("/api/virtual-numbers/orders", requireAuth, (_req, res) => {
   return apiError(res, 503, "Virtual-number ordering is not enabled yet. Configure an authorized provider and validate its permitted uses before enabling purchases.");
 });
 
+// Keep source/configuration files out of the public static file surface.
+app.use((req, res, next) => {
+  const path = req.path || "/";
+  if (
+    path === "/server.js" ||
+    path === "/package.json" ||
+    path === "/package-lock.json" ||
+    path === "/README.md" ||
+    path === "/.gitignore" ||
+    path.startsWith("/db/") ||
+    path.startsWith("/.github/") ||
+    path.startsWith("/node_modules/")
+  ) return res.sendStatus(404);
+  return next();
+});
 // Serve the storefront from the same Node service when deployed as a single application.
-app.use(express.static(__dirname, { extensions: ["html"], index: "index.html" }));
+app.use(express.static(__dirname, { extensions: ["html"], index: "index.html", dotfiles: "deny" }));
 
 app.use((error, _req, res, _next) => {
   console.error("[BKG API]", error && error.message ? error.message : "Unknown error");
