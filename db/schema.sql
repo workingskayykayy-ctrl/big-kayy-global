@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS customers (
   email VARCHAR(254) NOT NULL UNIQUE,
   password_hash TEXT NOT NULL,
   email_verified BOOLEAN NOT NULL DEFAULT FALSE,
+  role VARCHAR(20) NOT NULL DEFAULT 'customer' CHECK (role IN ('customer', 'admin')),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
