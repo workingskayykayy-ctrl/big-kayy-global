@@ -18,6 +18,8 @@ A responsive Teal & Graphite storefront for gadget enquiries and planned digital
 - `POST /api/auth/login` — sign in only after email verification.
 - `GET /api/auth/me` — read the signed-in customer's profile.
 - `POST /api/orders/enquiry` — save a gadget enquiry for an authenticated customer; this is not a paid order.
+- `GET /api/admin/enquiries` — protected admin list of recent enquiries.
+- `POST /api/admin/enquiries/:id/status` — protected admin status update.
 - `POST /api/payments/checkout` — deliberately disabled until a payment provider is selected and configured.
 - `GET /api/virtual-numbers/catalog`, `POST /api/virtual-numbers/orders` — deliberately disabled until an authorized provider is integrated.
 
@@ -38,7 +40,7 @@ Do not commit `.env` or expose secrets in browser JavaScript. Use HTTPS, managed
 
 - Choose and integrate a payment gateway, with verified signed webhooks, payment status reconciliation, refund/error handling, and test-mode coverage.
 - Choose an authorized virtual-number/SMS provider and integrate its documented API, country/service availability, pricing, order status and refund rules.
-- Build a protected admin dashboard and role-based admin access.
+- Build the admin dashboard UI; the API now has protected enquiry management routes and role checks. To promote a trusted account after deployment, an authorized database operator must explicitly set that customer's `role` to `admin`. Do not make every account an admin.
 - Add production tests, privacy/terms, support details, order fulfilment, and operational monitoring.
 - Confirm actual product stock, prices, delivery, tax and return policies.
 
