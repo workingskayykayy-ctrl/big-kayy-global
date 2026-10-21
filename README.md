@@ -6,8 +6,15 @@ A responsive Teal & Graphite storefront for gadget enquiries and planned digital
 
 - `index.html`, `style.css`, `app.js`: storefront, account dialog and browser interactions.
 - `server.js`: Express API and static frontend server.
+- `api/index.js`: Vercel serverless entry point for the existing Express API.
+- `vercel.json`: routes `/api/*` requests to the Vercel function.
+- `VERCEL_DEPLOYMENT.md`: Vercel deployment, environment variables, testing, and cutover guide.
 - `db/schema.sql`: PostgreSQL tables for customers, verification codes and enquiries.
 - `.env.example`: safe environment configuration template; contains no real credentials.
+
+## Deploying on Vercel
+
+Use the `migrate-to-vercel` branch for the prepared Vercel configuration. Follow [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) before switching your production domain. Vercel does not migrate PostgreSQL data; keep your current database and set its connection string as `DATABASE_URL` to preserve existing customers and enquiries.
 
 ## Implemented API routes
 
@@ -28,7 +35,7 @@ A responsive Teal & Graphite storefront for gadget enquiries and planned digital
 Requirements: Node.js 20+ and PostgreSQL.
 
 1. Create a PostgreSQL database.
-2. Run `db/schema.sql` against that database.
+2. Run `db/schema.sql` against the database.
 3. Copy `.env.example` to `.env`. Set a random `JWT_SECRET` (at least 32 characters), `DATABASE_URL`, SMTP credentials and `SMTP_FROM`. Set `FRONTEND_ORIGIN` to your exact frontend origin if the frontend and API are on separate domains.
 4. Install dependencies with `npm install`.
 5. Start the server with `npm start`.
