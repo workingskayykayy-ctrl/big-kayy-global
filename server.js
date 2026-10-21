@@ -228,9 +228,13 @@ app.post("/api/orders/enquiry", requireAuth, async (req, res, next) => {
   } catch (error) { return next(error); }
 });
 
-function requireAdmin(req, res, next) {
-  if (!req.user || req.user.role !== "admin") return apiError(res, 403, "Administrator access is required.");
-  return next();
+async function requireAdmin(req, res, next) {
+  try {
+    if (!requireDatabase(res)) return;
+    const result = await pool.query("SELECT role FROM customers WHERE id = $1", [req.user.sub]);
+    if (!result.rowCount || result.rows[0].role !== "admin") return apiError(res, 403, "Administrator access is required.");
+    return next();
+  } catch (error) { return next(error); }
 }
 
 app.get("/api/admin/enquiries", requireAuth, requireAdmin, async (req, res, next) => {
