@@ -25,6 +25,8 @@ Use the `migrate-to-vercel` branch for the prepared Vercel configuration. Follow
 - `POST /api/auth/login` — sign in only after email verification.
 - `GET /api/auth/me` — read the signed-in customer's profile.
 - `POST /api/orders/enquiry` — save a gadget enquiry for an authenticated customer; this is not a paid order.
+- `POST /api/subscriptions/request` — submit a monthly or yearly product subscription request using manual payment; BKG must confirm pricing and bank-transfer instructions before payment.
+- `GET /api/admin/subscriptions` — protected admin list of product subscription requests.
 - `GET /api/admin/enquiries` — protected admin list of recent enquiries.
 - `POST /api/admin/enquiries/:id/status` — protected admin status update.
 - `POST /api/payments/checkout` — deliberately disabled until a payment provider is selected and configured.
