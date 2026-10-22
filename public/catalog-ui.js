@@ -44,13 +44,13 @@ const photos={
  redmiNote15:"https://www.xtmobile.vn/vnt_upload/news/06_2024/Nen-mua-xiaomi-redmi-15-hay-redmi-note-15-pro-xtmobile.jpg",
  ipad10:"https://storage.micromagma.ma/micromagma/938bd1b008a13f01d1a2bb169b8907e3.jpg",
  ipad11:"https://seentat.com/cdn/shop/files/apple-ipad-11-a16-pink-1_4b0eec31-c9fd-4348-94b8-73848dc58c65.jpg?v=1769574849",
- jblFlip6:"https://cdn.shopware.store/N/R/R/AlrFq/media/28/4a/02/1772707448/e00116fd8aea4c83b7e16a629cb670ec.jpeg?ts=1772707448",
- jblFlip7:"https://hniesfp.imgix.net/8/images/detailed/1042/JBLFLIP7BLK_2.jpg?auto=format%2Ccompress&bg=0FFF&fit=fill&h=1000&w=1500",
- jblCharge5:"https://www.smarthomesounds.co.uk/wp/wp-content/uploads/2025/04/jbl_charge_6_vs_flip_7_portable_speaker_comparison_design-1024x576.jpg",
- jblCharge6:"https://deonet.com/web/image/product.product/2716474/image_1024/JBL%20Charge%206%20%28Zwart%2C%20Afdrukken%20in%20full%20color%2C%20Geen%20individuele%20personalisatie%20op%20product%2C%20Geen%20verpakking%2C%20Geen%20individuele%20personalisatie%20sleeve%2C%20Geen%20professionele%20hulp%20bij%20opmaak%29?unique=d245511",
- jblXtreme3:"https://www.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwca9663e5/JBL_XTREME_4_HERO_BLACK_47136_X2_%281%29.png?sh=535&sw=535",
- jblXtreme4:"https://www.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwca9663e5/JBL_XTREME_4_HERO_BLACK_47136_X2_%281%29.png?sh=535&sw=535",
- jblStudio:"https://www.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwca9663e5/JBL_XTREME_4_HERO_BLACK_47136_X2_%281%29.png?sh=535&sw=535",
+ jblFlip6:"https://ennap.com/cdn/shop/files/3_JBL_FLIP6_FRONT_BLUE_622154ad-2e19-42a4-82be-926b61553fb4.png?v=1730737699&width=1200",
+ jblFlip7:"https://dmau.imgix.net/media/catalog/product/j/b/jbl_flip_7_front_blue_011_x1_kxyvlp1gn3grs2sz.jpg",
+ jblCharge5:"https://cdn11.bigcommerce.com/s-3du79fd4vr/images/stencil/1280x1280/products/388/2248/399198-Product-0-I-638240333232040430__90719.1719380552.jpg?c=1",
+ jblCharge6:"https://www.jbl.com.mx/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwa77efb2b/LS_JBL_CHARGE_6_BLUE_FRONT_006_x1.png?sh=1605&sw=1605",
+ jblXtreme3:"https://media.tatacroma.com/Croma%20Assets/Entertainment/Speakers%20and%20Media%20Players/Images/235989_0_u7gb8h.png",
+ jblXtreme4:"https://jp.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw9015cf13/JBL_XTREME_4_FRONT_BLUE_47224_X1.png?sh=1605&sw=1605",
+ jblStudio:"https://res.cloudinary.com/dnrlt7lhe/image/upload/v1745008873/JBL-Harman-Kardon-Onyx-Studio-8-removebg-preview_pxgoe0.png",
  power:"https://pbs.twimg.com/media/Gc5dRrfXAAELHsd.jpg"
 };
 const backupPhotos={
@@ -114,6 +114,8 @@ function imageFor(p){
  if(n.includes("jbl charge 6"))return photos.jblCharge6;
  if(n.includes("jbl xtreme 3"))return photos.jblXtreme3;
  if(n.includes("jbl xtreme 4"))return photos.jblXtreme4;
+ if(n.includes("jbl studio 8"))return "https://res.cloudinary.com/dnrlt7lhe/image/upload/v1745008873/JBL-Harman-Kardon-Onyx-Studio-8-removebg-preview_pxgoe0.png";
+ if(n.includes("jbl studio 9"))return "https://product.hstatic.net/200000144777/product/4_0cdfe7688dda4b858712a30a501a7e3b_master.png";
  if(n.includes("jbl studio"))return photos.jblStudio;
  if(n.includes("power bank"))return photos.power;
  return "";
@@ -143,6 +145,21 @@ function render(){
      const backup=backupFor(p);
      if(backup && img.dataset.backup!=="used"){
       img.dataset.backup="used";img.src=backup;return;
+     }
+     if(!img.dataset.lastResort){
+      img.dataset.lastResort="used";
+      const fallback=(p.name.toLowerCase().includes("jbl")?
+       "https://i.ytimg.com/vi/UoLc1DolrGA/sddefault.jpg":
+       p.name.toLowerCase().includes("ipad")?
+       "https://storage.micromagma.ma/micromagma/938bd1b008a13f01d1a2bb169b8907e3.jpg":
+       p.name.toLowerCase().includes("power bank")?
+       "https://sportal365images.com/process/smp-images-production/pulse.ng/21112024/8f931f81-760b-41aa-bc1d-45a5f7195d66.png?operations=fit%28770%3A%29":
+       p.name.toLowerCase().includes("redmi")?
+       "https://static.langimg.com/mt/thumb/130417619/redmi-a7-pro-4g-launched-maharashtra-times.jpg?height=900&imgsize=31686&resizemode=75&width=1600":
+       p.name.toLowerCase().includes("samsung")?
+       "https://cdn.al-ain.com/lg/images/2023/12/21/147-142030-apple-samsung-top-list-best-selling-phones-3.jpeg":
+       "https://i.ebayimg.com/thumbs/images/g/8h0AAeSwmoJqIGaV/s-l500.jpg");
+      img.src=fallback;return;
      }
      img.remove();visual.classList.remove("has-image");
     });
