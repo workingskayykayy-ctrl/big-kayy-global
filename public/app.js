@@ -81,6 +81,24 @@
   });
 
 
+  // Product subscription requests are separate from the gadget enquiry list.
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest(".catalog-subscribe-item");
+    if (!button) return;
+    const dialog = $("#subscription-dialog");
+    const form = $("#subscription-form");
+    if (!dialog || !form) return;
+    form.reset();
+    $("#subscription-product").value = button.dataset.product || "Product subscription";
+    $("#subscription-period").value = "monthly";
+    const status = $("#subscription-status");
+    if (status) {
+      status.textContent = "Payment method: manual bank transfer after BKG confirms pricing and sends verified instructions.";
+      status.classList.remove("error");
+    }
+    if (typeof dialog.showModal === "function") dialog.showModal();
+  });
+
   // Product catalogue cards share the existing enquiry list.
   document.addEventListener("click", (event) => {
     const button = event.target.closest(".catalog-add-item");
@@ -213,6 +231,54 @@
       if (accountSubmit) accountSubmit.disabled = false;
     }
   });
+  const subscriptionDialog = $("#subscription-dialog");
+  const subscriptionForm = $("#subscription-form");
+  const subscriptionSubmit = $("#subscription-submit");
+  $("#close-subscription")?.addEventListener("click", () => subscriptionDialog?.close());
+  subscriptionDialog?.addEventListener("click", (event) => {
+    if (event.target === subscriptionDialog) subscriptionDialog.close();
+  });
+  subscriptionForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const token = window.sessionStorage.getItem("bkg-session-token");
+    if (!token) {
+      notify("Please create an account or sign in before requesting a subscription.");
+      subscriptionDialog?.close();
+      if (typeof accountDialog?.showModal === "function") {
+        setAccountMode("register", "Create an account or sign in to submit your subscription request.");
+        accountDialog.showModal();
+      }
+      return;
+    }
+    if (subscriptionSubmit) subscriptionSubmit.disabled = true;
+    const status = $("#subscription-status");
+    try {
+      const result = await apiRequest("/api/subscriptions/request", {
+        method: "POST",
+        headers: { Authorization: "Bearer " + token },
+        body: JSON.stringify({
+          productName: ($("#subscription-product")?.value || "").trim(),
+          period: $("#subscription-period")?.value || "monthly",
+          note: ($("#subscription-note")?.value || "").trim()
+        })
+      });
+      if (status) {
+        status.textContent = result.message || "Subscription request received. Wait for BKG to confirm the details.";
+        status.classList.remove("error");
+      }
+      notify("Subscription request sent to BKG.");
+      subscriptionForm.reset();
+      window.setTimeout(() => subscriptionDialog?.close(), 1200);
+    } catch (error) {
+      if (status) {
+        status.textContent = error.message || "Unable to send your subscription request.";
+        status.classList.add("error");
+      }
+    } finally {
+      if (subscriptionSubmit) subscriptionSubmit.disabled = false;
+    }
+  });
+
   setAccountMode("register");
 
   // Restore only the local enquiry list; no account, payment, or sensitive data is stored here.
