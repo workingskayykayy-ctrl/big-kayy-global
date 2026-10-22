@@ -80,7 +80,15 @@
     button.addEventListener("click", () => addItem(button.dataset.item || "Gadget enquiry"));
   });
 
-  $$(".service-link").forEach((button) => {
+
+  // Product catalogue cards share the existing enquiry list.
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest(".catalog-add-item");
+    if (!button) return;
+    addItem(button.dataset.item || "Product enquiry");
+  });
+
+  $(".service-link").forEach((button) => {
     button.addEventListener("click", () => {
       const service = button.dataset.service || "Digital services";
       sendEmail("BKG enquiry: " + service, "Hello BKG,\n\nI would like to enquire about: " + service + ".\n\nPlease confirm availability, the total price, and the steps to proceed.\n\nThank you.");
