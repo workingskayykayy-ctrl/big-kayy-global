@@ -76,7 +76,12 @@
     window.location.href = href;
   }
 
-  $$(".add-item").forEach((button) => {
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest(".catalog-add-item");
+    if (button) addItem(button.dataset.item || "Product enquiry");
+  });
+
+  $(".add-item").forEach((button) => {
     button.addEventListener("click", () => addItem(button.dataset.item || "Gadget enquiry"));
   });
 
