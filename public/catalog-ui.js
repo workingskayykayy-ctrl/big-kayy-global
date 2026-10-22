@@ -118,7 +118,28 @@ function imageFor(p){
  if(n.includes("jbl studio 9"))return "https://product.hstatic.net/200000144777/product/4_0cdfe7688dda4b858712a30a501a7e3b_master.png";
  if(n.includes("jbl studio"))return photos.jblStudio;
  if(n.includes("power bank"))return photos.power;
- return "";
+ if(n.includes("ipad"))return photos.ipad;
+ if(n.includes("jbl"))return photos.jblFlip6;
+ if(n.includes("redmi"))return photos.redmiNote15;
+ if(n.includes("samsung"))return photos.samsungS21;
+ if(n.includes("iphone"))return photos.iphone13;
+ return photos.iphone13;
+}
+function localProductArt(p){
+ const n=p.name.toLowerCase();let shape,accent="#242424";
+ if(n.includes("jbl")){
+  shape='<rect x="24" y="47" width="152" height="66" rx="32" fill="#252525"/><path d="M40 57h120M40 103h120" stroke="#555" stroke-width="2"/><circle cx="44" cy="80" r="22" fill="#181818" stroke="#666" stroke-width="3"/><circle cx="156" cy="80" r="22" fill="#181818" stroke="#666" stroke-width="3"/><text x="100" y="85" font-size="15" font-weight="bold" fill="#fff" text-anchor="middle">JBL</text>';
+ }else if(n.includes("power bank")){
+  shape='<rect x="51" y="20" width="98" height="112" rx="12" fill="#333"/><rect x="60" y="29" width="80" height="94" rx="8" fill="#454545"/><rect x="89" y="13" width="22" height="7" rx="2" fill="#111"/><circle cx="100" cy="113" r="3" fill="#e9c16b"/><text x="100" y="72" font-size="12" fill="#fff" text-anchor="middle">POWER</text><text x="100" y="87" font-size="10" fill="#ddd" text-anchor="middle">BANK</text>';
+ }else if(n.includes("ipad")){
+  shape='<rect x="38" y="12" width="124" height="126" rx="10" fill="#333"/><rect x="44" y="19" width="112" height="112" rx="4" fill="#dce8f1"/><path d="M44 100 Q85 40 156 76 V131 H44Z" fill="#7ca8c7"/><circle cx="100" cy="135" r="2" fill="#aaa"/>';
+ }else{
+  accent=n.includes("samsung")?"#4d6fcb":n.includes("redmi")?"#e15c4b":"#242424";
+  shape='<rect x="56" y="8" width="88" height="136" rx="13" fill="#272727"/><rect x="62" y="14" width="76" height="124" rx="9" fill="#e4e9f3"/><path d="M62 86 Q96 40 138 68 V138 H62Z" fill="'+accent+'"/><path d="M62 110 Q110 70 138 100 V138 H62Z" fill="#a9c2df"/><rect x="83" y="18" width="34" height="4" rx="2" fill="#444"/><circle cx="74" cy="29" r="4" fill="#252525"/><circle cx="74" cy="29" r="2" fill="#657b9b"/>';
+ }
+ const label=p.name.replace(/[&<>"]/g,"").slice(0,30);
+ const svg='<svg xmlns="http://www.w3.org/2000/svg" width="200" height="160" viewBox="0 0 200 160"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffaf5"/><stop offset="1" stop-color="#eadfd4"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-opacity=".18"/></filter></defs><rect width="200" height="160" rx="12" fill="url(#bg)"/><g filter="url(#s)">'+shape+'</g><text x="100" y="153" font-family="Arial,sans-serif" font-size="8" fill="#555" text-anchor="middle">'+label+'</text></svg>';
+ return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg);
 }
 data.groups.forEach(g=>{const o=document.createElement("option");o.value=g.category;o.textContent=g.category;select.appendChild(o);});
 function render(){
@@ -148,20 +169,11 @@ function render(){
      }
      if(!img.dataset.lastResort){
       img.dataset.lastResort="used";
-      const fallback=(p.name.toLowerCase().includes("jbl")?
-       "https://i.ytimg.com/vi/UoLc1DolrGA/sddefault.jpg":
-       p.name.toLowerCase().includes("ipad")?
-       "https://storage.micromagma.ma/micromagma/938bd1b008a13f01d1a2bb169b8907e3.jpg":
-       p.name.toLowerCase().includes("power bank")?
-       "https://sportal365images.com/process/smp-images-production/pulse.ng/21112024/8f931f81-760b-41aa-bc1d-45a5f7195d66.png?operations=fit%28770%3A%29":
-       p.name.toLowerCase().includes("redmi")?
-       "https://static.langimg.com/mt/thumb/130417619/redmi-a7-pro-4g-launched-maharashtra-times.jpg?height=900&imgsize=31686&resizemode=75&width=1600":
-       p.name.toLowerCase().includes("samsung")?
-       "https://cdn.al-ain.com/lg/images/2023/12/21/147-142030-apple-samsung-top-list-best-selling-phones-3.jpeg":
-       "https://i.ebayimg.com/thumbs/images/g/8h0AAeSwmoJqIGaV/s-l500.jpg");
-      img.src=fallback;return;
+      img.src=localProductArt(p);return;
      }
-     img.remove();visual.classList.remove("has-image");
+     img.onerror=null;
+     img.src=localProductArt(p);
+     visual.classList.add("has-image");
     });
     visual.appendChild(img);
    }
