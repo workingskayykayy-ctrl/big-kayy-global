@@ -13,7 +13,7 @@
     <a class="logo" href="#home" aria-label="BKG home">BKG<span class="logo-dot">.</span></a>
     <nav aria-label="Main navigation">
       <a href="#gadgets">Gadgets</a>
-      <a href="#subscriptions">Subscriptions</a>
+      <a href="#bills-recharge">Bills &amp; Recharge</a>
       <a href="#services">Digital Services</a>
       <a href="#about">About</a>
     </nav>
@@ -87,20 +87,21 @@
     </section>
 
 
-    <section id="subscriptions" class="store-section subscription-section">
-      <div class="section-heading"><div><p class="eyebrow">PRODUCT SUBSCRIPTIONS</p><h2>Subscribe to a product.</h2></div><p>Choose monthly or yearly. Payment is manual; BKG will confirm the price and send verified payment instructions before you pay.</p></div>
-      <div class="subscription-panel">
-        <form id="subscription-form">
-          <label for="subscription-product">Product</label>
-          <select id="subscription-product" name="productName" required><option value="">Choose a product</option></select>
-          <label for="subscription-period">Billing period</label>
-          <select id="subscription-period" name="period" required><option value="monthly">Monthly</option><option value="yearly">Yearly</option></select>
-          <label for="subscription-note">Note (optional)</label>
-          <textarea id="subscription-note" name="note" rows="3" maxlength="1000" placeholder="Any preferred colour, storage size, or questions?"></textarea>
-          <button class="button" id="subscription-submit" type="submit">Request subscription →</button>
-        </form>
-        <p id="subscription-status" class="subscription-status" role="status" aria-live="polite">Sign in to your BKG account before submitting a subscription request.</p>
-        <p class="panel-note">Submitting a request does not charge you or activate a subscription. Never transfer money until BKG confirms the amount and verified payment details.</p>
+    <section id="bills-recharge" class="store-section bills-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">BILLS &amp; RECHARGE</p><h2>Recharge. Renew. Pay bills.</h2></div>
+        <p>One place for Nigerian airtime, data, TV subscriptions and electricity. Live transactions will be switched on after provider and payment testing.</p>
+      </div>
+      <div class="bills-grid">
+        <article class="bill-card"><span class="bill-icon">▰</span><h3>Airtime</h3><p>MTN, Airtel, Glo and 9mobile top-ups.</p><button class="button bill-select" type="button" data-bill="Airtime">Choose airtime</button></article>
+        <article class="bill-card"><span class="bill-icon">◉</span><h3>Mobile data</h3><p>Choose a network and available data bundle.</p><button class="button bill-select" type="button" data-bill="Mobile data">Choose data</button></article>
+        <article class="bill-card"><span class="bill-icon">▣</span><h3>TV subscription</h3><p>DStv, GOtv and StarTimes renewals.</p><button class="button bill-select" type="button" data-bill="TV subscription">Choose TV</button></article>
+        <article class="bill-card"><span class="bill-icon">ϟ</span><h3>Electricity</h3><p>Prepaid tokens and supported postpaid bills. Choose your DisCo.</p><button class="button bill-select" type="button" data-bill="Electricity">Choose electricity</button></article>
+      </div>
+      <div class="bills-status" id="bills-status" role="status" aria-live="polite">
+        <strong>Provider setup required</strong>
+        <p>We’re preparing VTpass integration. Purchases are not active yet, so this page will not collect money or claim a recharge succeeded.</p>
+        <a href="https://vtpass.com/developers" target="_blank" rel="noopener noreferrer">Open VTpass developer setup ↗</a>
       </div>
     </section>
 
@@ -227,7 +228,7 @@
   <script src="products.js"></script>
   <script src="catalog-ui.js"></script>
   <script src="app.js"></script>
-  <script src="subscriptions.js"></script>
+  <script src="bills-recharge.js"></script>
   <script>window.BKG_API_BASE = "";</script>
 </body>
 </html>
