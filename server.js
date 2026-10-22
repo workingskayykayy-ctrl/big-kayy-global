@@ -310,6 +310,28 @@ app.post("/api/admin/subscriptions/:id/status", requireAuth, requireAdmin, async
   } catch (error) { return next(error); }
 });
 
+app.get("/api/bills/status", (_req, res) => {
+  const providerConfigured = Boolean(
+    process.env.VTPASS_API_KEY &&
+    process.env.VTPASS_PUBLIC_KEY &&
+    process.env.VTPASS_SECRET_KEY &&
+    ["sandbox", "live"].includes(String(process.env.VTPASS_ENV || "").toLowerCase())
+  );
+  return res.json({
+    success: true,
+    provider: "VTpass",
+    providerConfigured,
+    transactionsEnabled: false,
+    message: providerConfigured
+      ? "Credentials detected; payment and transaction safety checks are still required."
+      : "VTpass API credentials are not configured."
+  });
+});
+
+app.post("/api/bills/purchase", requireAuth, (_req, res) => {
+  return apiError(res, 503, "Bills & Recharge purchases are not enabled yet. Configure VTpass, connect customer payment collection, and complete sandbox tests before real transactions.");
+});
+
 app.post("/api/payments/checkout", requireAuth, (_req, res) => {
   return apiError(res, 503, "Online checkout is not enabled. The payment provider must be selected, configured and tested before BKG can accept payments.");
 });
