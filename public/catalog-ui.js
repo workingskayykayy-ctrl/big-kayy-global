@@ -53,6 +53,18 @@ const photos={
  jblStudio:"https://www.jbl.com/dw/image/v2/BFND_PRD/on/demandware.static/-/Sites-masterCatalog_Harman/default/dwca9663e5/JBL_XTREME_4_HERO_BLACK_47136_X2_%281%29.png?sh=535&sw=535",
  power:"https://pbs.twimg.com/media/Gc5dRrfXAAELHsd.jpg"
 };
+const backupPhotos={
+ iphone:"https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-13.jpg",
+ samsung:"https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s21-5g.jpg",
+ redmi:"https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-note-15-pro-5g.jpg"
+};
+function backupFor(p){
+ const n=p.name.toLowerCase();
+ if(n.includes("iphone"))return backupPhotos.iphone;
+ if(n.includes("samsung"))return backupPhotos.samsung;
+ if(n.includes("redmi"))return backupPhotos.redmi;
+ return "";
+}
 function imageFor(p){
  const n=p.name.toLowerCase().replace(/\s+/g," ");
  if(n.includes("iphone x")&&!n.includes("xr")&&!n.includes("xs"))return photos.iphoneX;
@@ -127,7 +139,13 @@ function render(){
    if(src){
     const img=document.createElement("img");img.className="catalog-product-image";img.src=src;img.alt=p.name+" product photo";img.loading="lazy";img.decoding="async";img.referrerPolicy="no-referrer";
     img.addEventListener("load",()=>visual.classList.add("has-image"),{once:true});
-    img.addEventListener("error",()=>{img.remove();visual.classList.remove("has-image");},{once:true});
+    img.addEventListener("error",()=>{
+     const backup=backupFor(p);
+     if(backup && img.dataset.backup!=="used"){
+      img.dataset.backup="used";img.src=backup;return;
+     }
+     img.remove();visual.classList.remove("has-image");
+    });
     visual.appendChild(img);
    }
    const info=document.createElement("div");info.className="catalog-product-info";
