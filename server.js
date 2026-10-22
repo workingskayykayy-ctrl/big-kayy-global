@@ -1,13 +1,13 @@
 require("dotenv").config();
 
 const express = require("express");
+const path = require("path");
 const helmet = require("helmet");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const path = require("path");
 const nodemailer = require("nodemailer");
 const { Pool } = require("pg");
 
@@ -260,57 +260,6 @@ app.post("/api/admin/enquiries/:id/status", requireAuth, requireAdmin, async (re
     );
     if (!result.rowCount) return apiError(res, 404, "Enquiry not found.");
     return res.json({ success: true, enquiry: result.rows[0] });
-  } catch (error) { return next(error); }
-});
-
-// Product subscription requests use manual payment only. No payment is collected by this endpoint.
-async function ensureProductSubscriptionsTable() {
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS product_subscriptions (
-      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      customer_id UUID NOT NULL REFERENCES customers(id) ON DELETE RESTRICT,
-      product_name VARCHAR(120) NOT NULL,
-      period VARCHAR(10) NOT NULL CHECK (period IN ('monthly', 'yearly')),
-      payment_method VARCHAR(20) NOT NULL DEFAULT 'manual' CHECK (payment_method = 'manual'),
-      note VARCHAR(1000) NOT NULL DEFAULT '',
-      status VARCHAR(30) NOT NULL DEFAULT 'pending_confirmation'
-        CHECK (status IN ('pending_confirmation', 'payment_instructions_sent', 'active', 'cancelled')),
-      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    )
-  `);
-  await pool.query("CREATE INDEX IF NOT EXISTS product_subscriptions_customer_created_idx ON product_subscriptions(customer_id, created_at DESC)");
-}
-
-app.post("/api/subscriptions/request", requireAuth, async (req, res, next) => {
-  try {
-    if (!requireDatabase(res)) return;
-    const productName = typeof req.body.productName === "string" ? req.body.productName.trim().slice(0, 120) : "";
-    const period = req.body.period;
-    const note = typeof req.body.note === "string" ? req.body.note.trim().slice(0, 1000) : "";
-    if (!productName) return apiError(res, 400, "Choose a product for your subscription request.");
-    if (!["monthly", "yearly"].includes(period)) return apiError(res, 400, "Choose a monthly or yearly subscription period.");
-    await ensureProductSubscriptionsTable();
-    const result = await pool.query(
-      "INSERT INTO product_subscriptions (customer_id, product_name, period, payment_method, note, status) VALUES ($1, $2, $3, 'manual', $4, 'pending_confirmation') RETURNING id, product_name, period, payment_method, status, created_at",
-      [req.user.sub, productName, period, note]
-    );
-    return res.status(201).json({
-      success: true,
-      message: "Your subscription request has been received. BKG will confirm availability, pricing and verified bank-transfer instructions before you pay.",
-      subscription: result.rows[0]
-    });
-  } catch (error) { return next(error); }
-});
-
-app.get("/api/admin/subscriptions", requireAuth, requireAdmin, async (_req, res, next) => {
-  try {
-    if (!requireDatabase(res)) return;
-    await ensureProductSubscriptionsTable();
-    const result = await pool.query(
-      "SELECT s.id, s.product_name, s.period, s.payment_method, s.note, s.status, s.created_at, c.full_name, c.email FROM product_subscriptions s JOIN customers c ON c.id = s.customer_id ORDER BY s.created_at DESC LIMIT 100"
-    );
-    return res.json({ success: true, subscriptions: result.rows });
   } catch (error) { return next(error); }
 });
 
