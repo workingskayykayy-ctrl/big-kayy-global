@@ -13,6 +13,7 @@
     <a class="logo" href="#home" aria-label="BKG home">BKG<span class="logo-dot">.</span></a>
     <nav aria-label="Main navigation">
       <a href="#gadgets">Gadgets</a>
+      <a href="#subscriptions">Subscriptions</a>
       <a href="#services">Digital Services</a>
       <a href="#about">About</a>
     </nav>
@@ -83,6 +84,24 @@
         <p id="catalog-count" class="catalog-count" aria-live="polite"></p>
       </div>
       <div id="catalog-groups" class="catalog-groups"><p>Loading products…</p></div>
+    </section>
+
+
+    <section id="subscriptions" class="store-section subscription-section">
+      <div class="section-heading"><div><p class="eyebrow">PRODUCT SUBSCRIPTIONS</p><h2>Subscribe to a product.</h2></div><p>Choose monthly or yearly. Payment is manual; BKG will confirm the price and send verified payment instructions before you pay.</p></div>
+      <div class="subscription-panel">
+        <form id="subscription-form">
+          <label for="subscription-product">Product</label>
+          <select id="subscription-product" name="productName" required><option value="">Choose a product</option></select>
+          <label for="subscription-period">Billing period</label>
+          <select id="subscription-period" name="period" required><option value="monthly">Monthly</option><option value="yearly">Yearly</option></select>
+          <label for="subscription-note">Note (optional)</label>
+          <textarea id="subscription-note" name="note" rows="3" maxlength="1000" placeholder="Any preferred colour, storage size, or questions?"></textarea>
+          <button class="button" id="subscription-submit" type="submit">Request subscription →</button>
+        </form>
+        <p id="subscription-status" class="subscription-status" role="status" aria-live="polite">Sign in to your BKG account before submitting a subscription request.</p>
+        <p class="panel-note">Submitting a request does not charge you or activate a subscription. Never transfer money until BKG confirms the amount and verified payment details.</p>
+      </div>
     </section>
 
     <section id="services" class="store-section services-section">
@@ -208,6 +227,7 @@
   <script src="products.js"></script>
   <script src="catalog-ui.js"></script>
   <script src="app.js"></script>
+  <script src="subscriptions.js"></script>
   <script>window.BKG_API_BASE = "";</script>
 </body>
 </html>
