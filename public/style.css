@@ -1368,3 +1368,16 @@ footer small {
 .catalog-product-visual.has-image .catalog-product-fallback{display:none}
 .catalog-product-fallback{font-size:42px;color:var(--accent)}
 @media(max-width:600px){.catalog-product-image{padding:5px}}
+
+/* Product subscription request UI */
+.subscription-section{margin-top:64px;padding:clamp(22px,4vw,42px);border:1px solid rgba(57,214,197,.22);border-radius:20px;background:linear-gradient(135deg,rgba(57,214,197,.08),rgba(255,255,255,.015))}
+.subscription-panel{max-width:720px;padding:clamp(18px,3vw,28px);border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(0,0,0,.12)}
+#subscription-form{display:grid;gap:10px}
+#subscription-form label{margin-top:8px;font-size:13px;font-weight:700}
+#subscription-product,#subscription-period,#subscription-note{width:100%;min-width:0;padding:12px;border:1px solid #e8d9ce;border-radius:9px;background:#fffaf6;color:#202626;font:inherit}
+#subscription-note{resize:vertical}
+#subscription-submit{margin-top:10px;justify-self:start}
+.subscription-status{margin:16px 0 8px;color:var(--accent);font-size:13px;line-height:1.6}
+.subscription-status.error{color:#f18b80}
+.subscription-status.success{color:#6ee7b7}
+@media(max-width:600px){.subscription-panel{padding:16px}#subscription-submit{width:100%}}
