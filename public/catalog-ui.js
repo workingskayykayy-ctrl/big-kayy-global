@@ -6,6 +6,25 @@ const search=document.getElementById("catalog-search");
 const select=document.getElementById("catalog-category");
 const count=document.getElementById("catalog-count");
 if(!data||!host||!select)return;
+
+const photo={
+ iphone:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=800&q=80",
+ samsung:"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=800&q=80",
+ redmi:"https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=800&q=80",
+ ipad:"https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=800&q=80",
+ jbl:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=800&q=80",
+ power:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=800&q=80"
+};
+function imageFor(p){
+ const n=p.name.toLowerCase();
+ if(n.includes("ipad"))return photo.ipad;
+ if(n.includes("samsung"))return photo.samsung;
+ if(n.includes("redmi"))return photo.redmi;
+ if(n.includes("jbl"))return photo.jbl;
+ if(n.includes("power bank"))return photo.power;
+ if(n.includes("iphone"))return photo.iphone;
+ return "";
+}
 data.groups.forEach(g=>{const o=document.createElement("option");o.value=g.category;o.textContent=g.category;select.appendChild(o);});
 function render(){
  const q=(search.value||"").trim().toLowerCase(), chosen=select.value;
@@ -22,7 +41,14 @@ function render(){
   products.forEach(p=>{
    const card=document.createElement("article");card.className="catalog-product-card";
    const visual=document.createElement("div");visual.className="catalog-product-visual";
-   const icon=document.createElement("span");icon.setAttribute("aria-hidden","true");icon.textContent=/iphone|samsung|redmi/i.test(p.name)?"▯":/ipad/i.test(p.name)?"▱":/jbl/i.test(p.name)?"♫":"ϟ";visual.appendChild(icon);
+   const icon=document.createElement("span");icon.className="catalog-product-fallback";icon.setAttribute("aria-hidden","true");icon.textContent=/iphone|samsung|redmi/i.test(p.name)?"▯":/ipad/i.test(p.name)?"▱":/jbl/i.test(p.name)?"♫":"ϟ";visual.appendChild(icon);
+   const src=imageFor(p);
+   if(src){
+    const img=document.createElement("img");img.className="catalog-product-image";img.src=src;img.alt=p.name+" product photo";img.loading="lazy";img.decoding="async";
+    img.addEventListener("load",()=>visual.classList.add("has-image"),{once:true});
+    img.addEventListener("error",()=>img.remove(),{once:true});
+    visual.appendChild(img);
+   }
    const info=document.createElement("div");info.className="catalog-product-info";
    const category=document.createElement("p");category.className="catalog-product-category";category.textContent=p.category;
    const name=document.createElement("h4");name.textContent=p.name;
