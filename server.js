@@ -7,6 +7,7 @@ const rateLimit = require("express-rate-limit");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const path = require("path");
 const nodemailer = require("nodemailer");
 const { Pool } = require("pg");
 
@@ -341,7 +342,7 @@ app.use((req, res, next) => {
   return next();
 });
 // Serve the storefront from the same Node service when deployed as a single application.
-app.use(express.static(__dirname, { extensions: ["html"], index: "index.html", dotfiles: "deny" }));
+app.use(express.static(path.join(__dirname, "public"), { extensions: ["html"], index: "index.html", dotfiles: "deny" }));
 
 app.use((error, _req, res, _next) => {
   console.error("[BKG API]", error && error.message ? error.message : "Unknown error");
