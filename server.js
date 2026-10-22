@@ -269,6 +269,47 @@ app.post("/api/admin/enquiries/:id/status", requireAuth, requireAdmin, async (re
   } catch (error) { return next(error); }
 });
 
+
+async function ensureProductSubscriptionsTable() {
+  await pool.query("CREATE TABLE IF NOT EXISTS product_subscriptions (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), customer_id UUID NOT NULL REFERENCES customers(id) ON DELETE RESTRICT, product_name VARCHAR(120) NOT NULL, period VARCHAR(10) NOT NULL CHECK (period IN ('monthly','yearly')), payment_method VARCHAR(20) NOT NULL DEFAULT 'manual' CHECK (payment_method = 'manual'), note VARCHAR(1000) NOT NULL DEFAULT '', status VARCHAR(30) NOT NULL DEFAULT 'pending_confirmation' CHECK (status IN ('pending_confirmation','payment_instructions_sent','active','cancelled')), created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())");
+  await pool.query("CREATE INDEX IF NOT EXISTS product_subscriptions_customer_created_idx ON product_subscriptions(customer_id, created_at DESC)");
+}
+
+app.post("/api/subscriptions/request", requireAuth, async (req, res, next) => {
+  try {
+    if (!requireDatabase(res)) return;
+    const productName = typeof req.body.productName === "string" ? req.body.productName.trim().slice(0, 120) : "";
+    const period = req.body.period;
+    const note = typeof req.body.note === "string" ? req.body.note.trim().slice(0, 1000) : "";
+    if (!productName) return apiError(res, 400, "Choose a product for your subscription request.");
+    if (!["monthly", "yearly"].includes(period)) return apiError(res, 400, "Choose a monthly or yearly billing period.");
+    await ensureProductSubscriptionsTable();
+    const result = await pool.query("INSERT INTO product_subscriptions (customer_id, product_name, period, payment_method, note, status) VALUES ($1, $2, $3, 'manual', $4, 'pending_confirmation') RETURNING id, product_name, period, payment_method, status, created_at", [req.user.sub, productName, period, note]);
+    return res.status(201).json({ success: true, message: "Request received. BKG will confirm availability, price and verified payment instructions before you pay.", subscription: result.rows[0] });
+  } catch (error) { return next(error); }
+});
+
+app.get("/api/admin/subscriptions", requireAuth, requireAdmin, async (_req, res, next) => {
+  try {
+    if (!requireDatabase(res)) return;
+    await ensureProductSubscriptionsTable();
+    const result = await pool.query("SELECT s.id, s.product_name, s.period, s.payment_method, s.note, s.status, s.created_at, c.full_name, c.email FROM product_subscriptions s JOIN customers c ON c.id = s.customer_id ORDER BY s.created_at DESC LIMIT 100");
+    return res.json({ success: true, subscriptions: result.rows });
+  } catch (error) { return next(error); }
+});
+
+app.post("/api/admin/subscriptions/:id/status", requireAuth, requireAdmin, async (req, res, next) => {
+  try {
+    if (!requireDatabase(res)) return;
+    const allowed = new Set(["pending_confirmation", "payment_instructions_sent", "active", "cancelled"]);
+    if (!allowed.has(req.body.status)) return apiError(res, 400, "Choose a valid subscription status.");
+    await ensureProductSubscriptionsTable();
+    const result = await pool.query("UPDATE product_subscriptions SET status = $1, updated_at = NOW() WHERE id = $2 RETURNING id, status, updated_at", [req.body.status, req.params.id]);
+    if (!result.rowCount) return apiError(res, 404, "Subscription request not found.");
+    return res.json({ success: true, subscription: result.rows[0] });
+  } catch (error) { return next(error); }
+});
+
 app.post("/api/payments/checkout", requireAuth, (_req, res) => {
   return apiError(res, 503, "Online checkout is not enabled. The payment provider must be selected, configured and tested before BKG can accept payments.");
 });
