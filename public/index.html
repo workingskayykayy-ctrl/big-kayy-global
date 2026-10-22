@@ -74,76 +74,15 @@
     </section>
 
     <section id="gadgets" class="store-section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">THE GADGET EDIT</p>
-          <h2>Tech that fits your life.</h2>
-        </div>
-        <p>Browse our featured categories. Product availability and final pricing will be confirmed before checkout.</p>
+      <div class="section-heading"><div><p class="eyebrow">THE GADGET EDIT</p><h2>Shop our product catalogue.</h2></div><p>Browse current listed prices in naira. Prices marked “Price on request” need confirmation.</p></div>
+      <div class="catalog-controls">
+        <label class="catalog-search-label" for="catalog-search">Search products</label>
+        <input id="catalog-search" type="search" placeholder="Search iPhone, Samsung, JBL…" autocomplete="off">
+        <label class="catalog-search-label" for="catalog-category">Category</label>
+        <select id="catalog-category"><option value="all">All products</option></select>
+        <p id="catalog-count" class="catalog-count" aria-live="polite"></p>
       </div>
-
-      <div class="product-grid">
-        <article class="product-card">
-          <div class="product-visual visual-phone">
-            <span class="product-tag">SMART TECH</span>
-            <div class="render-phone">
-              <div class="camera-stack"></div>
-              <div class="phone-shine"></div>
-            </div>
-          </div>
-          <div class="product-info">
-            <p class="product-category">Mobile</p>
-            <h3>Smartphones</h3>
-            <p>Everyday performance, great cameras and reliable connectivity.</p>
-            <button class="outline-button add-item" data-item="Smartphones" data-price="0">Add to enquiry list <span>＋</span></button>
-          </div>
-        </article>
-
-        <article class="product-card">
-          <div class="product-visual visual-laptop">
-            <span class="product-tag">WORK & CREATE</span>
-            <div class="render-laptop">
-              <div class="laptop-screen"><span>BKG</span></div>
-              <div class="laptop-base"></div>
-            </div>
-          </div>
-          <div class="product-info">
-            <p class="product-category">Computing</p>
-            <h3>Laptops</h3>
-            <p>Devices for work, study, business and creative projects.</p>
-            <button class="outline-button add-item" data-item="Laptops" data-price="0">Add to enquiry list <span>＋</span></button>
-          </div>
-        </article>
-
-        <article class="product-card">
-          <div class="product-visual visual-audio">
-            <span class="product-tag">SOUND BETTER</span>
-            <div class="speaker speaker-large"><i></i><b></b></div>
-            <div class="speaker speaker-small"><i></i><b></b></div>
-          </div>
-          <div class="product-info">
-            <p class="product-category">Audio</p>
-            <h3>Speakers & Audio</h3>
-            <p>Bring your playlists, movies and moments to life.</p>
-            <button class="outline-button add-item" data-item="Speakers & Audio" data-price="0">Add to enquiry list <span>＋</span></button>
-          </div>
-        </article>
-
-        <article class="product-card">
-          <div class="product-visual visual-accessories">
-            <span class="product-tag">DAILY ESSENTIALS</span>
-            <div class="accessory-disc disc-one"></div>
-            <div class="accessory-disc disc-two"></div>
-            <div class="accessory-cable"></div>
-          </div>
-          <div class="product-info">
-            <p class="product-category">Accessories</p>
-            <h3>Chargers & More</h3>
-            <p>Useful add-ons, charging essentials and everyday extras.</p>
-            <button class="outline-button add-item" data-item="Gadget Accessories" data-price="0">Add to enquiry list <span>＋</span></button>
-          </div>
-        </article>
-      </div>
+      <div id="catalog-groups" class="catalog-groups"><p>Loading products…</p></div>
     </section>
 
     <section id="services" class="store-section services-section">
@@ -266,6 +205,8 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
+  <script src="products.js"></script>
+  <script src="catalog-ui.js"></script>
   <script src="app.js"></script>
   <script>window.BKG_API_BASE = "";</script>
 </body>
