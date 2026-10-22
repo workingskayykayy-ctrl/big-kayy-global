@@ -182,7 +182,7 @@ function render(){
    const name=document.createElement("h4");name.textContent=p.name;
    const price=document.createElement("p");price.className="catalog-product-price"+(p.price===null?" price-request":"");price.textContent=p.priceLabel;
    const btn=document.createElement("button");btn.type="button";btn.className="outline-button catalog-add-item";btn.dataset.item=p.name+" — "+p.priceLabel;btn.textContent="Add to enquiry list +";
-   info.append(category,name,price,btn);card.append(visual,info);grid.appendChild(card);
+   const subscribe=document.createElement("button");subscribe.type="button";subscribe.className="catalog-subscribe-item";subscribe.dataset.product=p.name;subscribe.textContent="Subscribe →";info.append(category,name,price,btn,subscribe);card.append(visual,info);grid.appendChild(card);
   });
   section.append(heading,grid);host.appendChild(section);
  });
