@@ -113,8 +113,12 @@
             })
           });
           const result = await response.json().catch(function () { return {}; });
+          const diagnostics = [];
+          if (result.providerResponseCode) diagnostics.push("VTpass code: " + result.providerResponseCode);
+          if (result.status && result.status !== "unknown") diagnostics.push("VTpass status: " + result.status);
           notice.textContent = (result.message || "The Sandbox request could not be confirmed.") +
-            (result.requestId ? " Reference: " + result.requestId + "." : "");
+            (result.requestId ? " Reference: " + result.requestId + "." : "") +
+            (diagnostics.length ? " " + diagnostics.join(". ") + "." : "");
           notice.style.background = result.success ? "#e8f5e9" : "#fff3df";
         } catch (_) {
           notice.textContent = "Could not reach the BKG server. No success has been confirmed. Check the Vercel deployment before trying again.";
