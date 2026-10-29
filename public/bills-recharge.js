@@ -86,12 +86,43 @@
       dialog.addEventListener("click", function (event) {
         if (event.target === dialog) dialog.close();
       });
-      dialog.querySelector("#bill-service-form").addEventListener("submit", function (event) {
+      dialog.querySelector("#bill-service-form").addEventListener("submit", async function (event) {
         event.preventDefault();
         const form = event.currentTarget;
         if (!form.reportValidity()) return;
-        notice.textContent = "Your details are filled in, but VTpass sandbox transaction handling is not connected yet. Nothing has been sent to VTpass and no money has been collected. Please do not treat this as a purchase.";
+        const selectedService = typeSelect.value;
+        if (selectedService !== "Airtime") {
+          notice.textContent = "Only airtime is connected to the VTpass Sandbox test at this stage. Mobile data, TV and electricity are not connected yet.";
+          notice.style.background = "#fff3df";
+          return;
+        }
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = "Testing with VTpass Sandbox…";
+        notice.textContent = "Sending a Sandbox test request. This is not a live purchase. Please do not submit again while it is processing.";
         notice.style.background = "#fff3df";
+        try {
+          const response = await fetch(apiBase + "/api/bills/purchase", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              service: selectedService,
+              provider: providerSelect.value,
+              phone: phoneInput.value.trim(),
+              amount: Number(amountInput.value)
+            })
+          });
+          const result = await response.json().catch(function () { return {}; });
+          notice.textContent = (result.message || "The Sandbox request could not be confirmed.") +
+            (result.requestId ? " Reference: " + result.requestId + "." : "");
+          notice.style.background = result.success ? "#e8f5e9" : "#fff3df";
+        } catch (_) {
+          notice.textContent = "Could not reach the BKG server. No success has been confirmed. Check the Vercel deployment before trying again.";
+          notice.style.background = "#fff3df";
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = "Check details";
+        }
       });
     }
 
