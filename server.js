@@ -373,11 +373,24 @@ app.post("/api/bills/purchase", async (req, res) => {
       body: JSON.stringify({ request_id, serviceID, amount, phone }),
       signal: AbortSignal.timeout(20000)
     });
-    const data = await upstream.json().catch(() => null);
-    if (!upstream.ok || !data || typeof data !== "object") {
-      return res.status(502).json({ success: false, message: "VTpass Sandbox did not return a usable response. Check the Sandbox API credentials and dashboard." });
+    const rawBody = await upstream.text();
+    let data = null;
+    try { data = JSON.parse(rawBody); } catch (_) {}
+    if (!data || typeof data !== "object") {
+      console.error("VTpass Sandbox returned non-JSON response; HTTP", upstream.status);
+      return res.status(502).json({
+        success: false,
+        message: "VTpass Sandbox returned an unexpected response (HTTP " + upstream.status + "). Check the Vercel function logs for details."
+      });
     }
     const code = String(data.code || "");
+    if (!upstream.ok && !code) {
+      console.error("VTpass Sandbox HTTP error:", upstream.status, String(data.response_description || data.message || "no provider message"));
+      return res.status(502).json({
+        success: false,
+        message: String(data.response_description || data.message || ("VTpass Sandbox returned HTTP " + upstream.status + "."))
+      });
+    }
     const transaction = data.content && data.content.transactions || {};
     const delivered = code === "000" || /successful/i.test(String(data.response_description || ""));
     const pending = /pending|processing/i.test(String(transaction.status || data.response_description || ""));
