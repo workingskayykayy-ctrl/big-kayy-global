@@ -13,7 +13,7 @@
       if (result && result.providerConfigured) {
         status.querySelector("strong").textContent = "VTpass credentials detected";
         status.querySelector("p").textContent =
-          "Provider credentials are configured. Purchases remain disabled until sandbox transactions, customer payment collection, transaction verification and reconciliation are tested.";
+          "VTpass Sandbox airtime testing is enabled. Live purchases remain disabled until customer payment collection, transaction verification and reconciliation are completed.";
       }
     } catch (_) {
       // Keep the safe setup-required message when the API is unavailable.
