@@ -321,9 +321,10 @@ app.get("/api/bills/status", (_req, res) => {
     success: true,
     provider: "VTpass",
     providerConfigured,
-    transactionsEnabled: false,
+    transactionsEnabled: providerConfigured && String(process.env.VTPASS_ENV || "").toLowerCase() === "sandbox",
+    sandboxOnly: true,
     message: providerConfigured
-      ? "Credentials detected; payment and transaction safety checks are still required."
+      ? "VTpass Sandbox airtime testing is enabled. Live purchases remain disabled."
       : "VTpass API credentials are not configured."
   });
 });
