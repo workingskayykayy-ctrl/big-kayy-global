@@ -328,8 +328,76 @@ app.get("/api/bills/status", (_req, res) => {
   });
 });
 
-app.post("/api/bills/purchase", requireAuth, (_req, res) => {
-  return apiError(res, 503, "Bills & Recharge purchases are not enabled yet. Configure VTpass, connect customer payment collection, and complete sandbox tests before real transactions.");
+// Sandbox-only airtime test endpoint. It never uses the live VTpass host.
+function lagosRequestId() {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Africa/Lagos",
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+  }).formatToParts(new Date()).reduce((out, part) => {
+    if (part.type !== "literal") out[part.type] = part.value;
+    return out;
+  }, {});
+  return parts.year + parts.month + parts.day + parts.hour + parts.minute +
+    crypto.randomBytes(3).toString("hex").toUpperCase();
+}
+
+app.post("/api/bills/purchase", async (req, res) => {
+  if (String(process.env.VTPASS_ENV || "").toLowerCase() !== "sandbox") {
+    return apiError(res, 503, "Only VTpass Sandbox testing is enabled. Live purchases are disabled.");
+  }
+  const { VTPASS_API_KEY, VTPASS_SECRET_KEY } = process.env;
+  if (!VTPASS_API_KEY || !VTPASS_SECRET_KEY) {
+    return apiError(res, 503, "VTpass Sandbox API key or secret key is missing from server environment variables.");
+  }
+  const service = String(req.body && req.body.service || "");
+  const provider = String(req.body && req.body.provider || "").toLowerCase();
+  const phone = String(req.body && req.body.phone || "").replace(/[\s()-]/g, "");
+  const amount = Number(req.body && req.body.amount);
+  const serviceIds = { mtn: "mtn", airtel: "airtel", glo: "glo", "9mobile": "9mobile", etisalat: "9mobile" };
+  if (service !== "Airtime") return apiError(res, 400, "For this first step, only airtime can be tested. Data, TV and electricity are not connected yet.");
+  const serviceID = serviceIds[provider];
+  if (!serviceID) return apiError(res, 400, "Choose a supported mobile network.");
+  if (!/^0\d{10}$/.test(phone)) return apiError(res, 400, "Enter a valid 11-digit Nigerian phone number.");
+  if (!Number.isInteger(amount) || amount < 50 || amount > 100000) return apiError(res, 400, "Enter an airtime amount between ₦50 and ₦100,000.");
+  const request_id = lagosRequestId();
+  try {
+    const upstream = await fetch("https://sandbox.vtpass.com/api/pay", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": VTPASS_API_KEY,
+        "secret-key": VTPASS_SECRET_KEY
+      },
+      body: JSON.stringify({ request_id, serviceID, amount, phone }),
+      signal: AbortSignal.timeout(20000)
+    });
+    const data = await upstream.json().catch(() => null);
+    if (!upstream.ok || !data || typeof data !== "object") {
+      return res.status(502).json({ success: false, message: "VTpass Sandbox did not return a usable response. Check the Sandbox API credentials and dashboard." });
+    }
+    const code = String(data.code || "");
+    const transaction = data.content && data.content.transactions || {};
+    const delivered = code === "000" || /successful/i.test(String(data.response_description || ""));
+    const pending = /pending|processing/i.test(String(transaction.status || data.response_description || ""));
+    return res.status(200).json({
+      success: delivered,
+      pending,
+      sandbox: true,
+      requestId: request_id,
+      status: String(transaction.status || data.response_description || "unknown"),
+      message: delivered
+        ? "VTpass Sandbox reports a successful test response. This is not a live airtime purchase."
+        : pending
+          ? "VTpass Sandbox reports that the test is pending. Check transaction status before retrying."
+          : String(data.response_description || "VTpass Sandbox did not confirm success. No live purchase was made."),
+      providerResponseCode: code || null
+    });
+  } catch (error) {
+    return apiError(res, 502, error && error.name === "TimeoutError"
+      ? "VTpass Sandbox timed out. Do not retry repeatedly; check the transaction status first."
+      : "Could not reach VTpass Sandbox. Check the deployment and Sandbox credentials.");
+  }
 });
 
 app.post("/api/payments/checkout", requireAuth, (_req, res) => {
